@@ -17,6 +17,7 @@ int main(void)
 	fclose(f2);	
 	
 	pid_t child1p, child2p;
+	int status;
 	child1p = fork();
 	
 	if (child1p == 0)
@@ -29,7 +30,7 @@ int main(void)
 			printf("%c",c1);
 		}
 		printf("\n");
-		kill(child1p);
+		exit(0);
 	}
 	else
 	{
@@ -44,10 +45,12 @@ int main(void)
 				printf("%c",c2);
 			}
 			printf("\n");
-			kill(child2p);
+			exit(0);
 		}
 		else
 		{
+			waitpid(child1p, &status, 0);
+			waitpid(child2p, &status, 0);
 			printf("I am the parent\n");
 		}
 	}
